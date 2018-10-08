@@ -31,6 +31,8 @@ public class GreedyGuessPlayer implements Player{
 		boolean east = false;
 		boolean south = false;
 		boolean west = false;
+		
+		//boolean raycasting = false;
 
     private World world;
     //private ArrayList<Guess> shots = new ArrayList<Guess>(); realised this isnt needed 
@@ -121,6 +123,29 @@ public class GreedyGuessPlayer implements Player{
 						}
 					}
 					
+					if(north == true)
+					{
+						yCheck -= 1;
+						System.out.println("North ycheck reset");
+					}
+					else if(east == true)
+					{
+						xCheck -= 1;
+						System.out.println("East xcheck reset");
+					}
+					else if(south == true)
+					{
+						yCheck += 1;
+						System.out.println("South ycheck reset");
+					}
+					else if(west == true)
+					{
+						xCheck += 1;
+						System.out.println("West xcheck reset");
+					}
+					
+					System.out.println("Nintendo");
+					
 					/*
 					for (Guess guessCheck : possibleGuesses)
 					{
@@ -170,7 +195,13 @@ public class GreedyGuessPlayer implements Player{
 		
 		
 		int i = 0;
+		
 		boolean deciding = false;
+		
+		boolean north = false;
+		boolean east = false;
+		boolean south = false;
+		boolean west = false;
 		
 		if(raycastQueue.size() > 0)
 		{
@@ -247,6 +278,7 @@ public class GreedyGuessPlayer implements Player{
 		else
 		{
 			raycastQueue.pollLast();
+			System.out.println("poll last");
 		}
 		
 		
@@ -257,22 +289,30 @@ public class GreedyGuessPlayer implements Player{
 				if(north == true)
 				{
 					yCheck += 1;
+					
+					//north = false;
 					deciding = false;
 				}
 				else if(east == true)
 				{
 					xCheck += 1;
+					
+					//east = false;
 					deciding = false;
 				}
 				else if(south == true)
 				{
 					yCheck -= 1;
+					
+					//south = false;
 					deciding = false;
 				}
 				else if(west == true)
 				{
 					xCheck -= 1;
+					//west = false;
 					deciding = false;
+					
 				}
 			}
 		}
@@ -308,22 +348,30 @@ public class GreedyGuessPlayer implements Player{
 			if ()
 		}
 		*/
-		
-		xCheck += 2;
-		
-		if (xCheck >= 10)
+		if(raycastQueue.size() > 0)
 		{
-			yCheck++;
-			xCheck = 0;
-			System.out.println("^^^Column up^^^");
+			//Do nothin.
+			System.out.println("Skipping update.");
 		}
-		
-		if ( yCheck % 2 == 1 && xCheck == 0)
+		else
 		{
-			xCheck = 1;
-			System.out.println("odd row. Offsetting by 1.");
+		
+			xCheck += 2;
+			
+			if (xCheck >= 10)
+			{
+				yCheck++;
+				xCheck = 0;
+				System.out.println("^^^Column up^^^");
+			}
+			
+			if ( yCheck % 2 == 1 && xCheck == 0)
+			{
+				xCheck = 1;
+				System.out.println("odd row. Offsetting by 1.");
+			}
+		
 		}
-
 		System.out.println("***end of update");
 		System.out.println("xCheck = " + xCheck);
 		System.out.println("yCheck = " + yCheck);
