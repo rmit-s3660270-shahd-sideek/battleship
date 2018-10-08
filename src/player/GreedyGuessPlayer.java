@@ -10,6 +10,8 @@ import java.util.Queue;
 import java.util.PriorityQueue;
 import java.util.LinkedList;
 import java.util.*;
+import java.util.Collection;
+import java.util.Collections;
 
 /**
  * Random guess player (task A).
@@ -24,6 +26,11 @@ public class GreedyGuessPlayer implements Player{
 	//Queue raycastQueue = new Guess();
 	//Queue raycastQueue = new LinkedList();
 	Deque<Guess> raycastQueue = new LinkedList<Guess>();
+	
+	boolean north = false;
+		boolean east = false;
+		boolean south = false;
+		boolean west = false;
 
     private World world;
     //private ArrayList<Guess> shots = new ArrayList<Guess>(); realised this isnt needed 
@@ -91,6 +98,39 @@ public class GreedyGuessPlayer implements Player{
                     hits++;
                     System.out.println("shots taken: " + hits);
 					System.out.println("raycastQueue size: " + raycastQueue.size());
+					System.out.println("possibleGuesses size: " + possibleGuesses.size());
+					
+					Iterator iter = possibleGuesses.iterator();
+					
+					/*
+					while (iter.hasNext())
+					{
+						System.out.println(iter.next());
+						if (guess.column == iter.next().column && guess.row == iter.next().row )
+						{
+							possibleGuesses.remove(iter.next());
+						}
+						System.out.println(iter.next());
+					}*/
+					
+					for(i = 0; i < possibleGuesses.size(); i++)
+					{
+						if (guess.column == possibleGuesses.get(i).column && guess.row == possibleGuesses.get(i).row )
+						{
+							possibleGuesses.remove(i);
+						}
+					}
+					
+					/*
+					for (Guess guessCheck : possibleGuesses)
+					{
+						if (guess.column == guessCheck.column && guess.row == guessCheck.row )
+						{
+							possibleGuesses.remove(guessCheck);
+						}
+					}*/
+					
+					
                     return answer;
                 }
                 else{
@@ -105,6 +145,16 @@ public class GreedyGuessPlayer implements Player{
 
         if (answer.isHit == false) {
             System.out.println("Missed!");
+			
+			for(i = 0; i < possibleGuesses.size(); i++)
+			{
+				if (guess.column == possibleGuesses.get(i).column && guess.row == possibleGuesses.get(i).row )
+				{
+					possibleGuesses.remove(i);
+				}
+			}
+			
+			
         }
         return answer;
     } // end of getAnswer()
@@ -117,15 +167,117 @@ public class GreedyGuessPlayer implements Player{
         //int ranVal = ThreadLocalRandom.current().nextInt(0, location.size());
 		
 		//Check if a move is possible (in this arrayList.)
-		for (Guess guessCheck : possibleGuesses)
+		
+		
+		int i = 0;
+		boolean deciding = false;
+		
+		if(raycastQueue.size() > 0)
 		{
-			if (xCheck )
+			//Up 1 (North)
+			for(i = 0; i < possibleGuesses.size(); i++)
+			{
+				if (xCheck == possibleGuesses.get(i).column && (yCheck + 1) == possibleGuesses.get(i).row )
+				{
+					System.out.println("North is free!");
+					north = true;
+				}
+			}
+			
+			//Right 1 (East)
+			for(i = 0; i < possibleGuesses.size(); i++)
+			{
+				if ((xCheck + 1) == possibleGuesses.get(i).column && yCheck == possibleGuesses.get(i).row )
+				{
+					System.out.println("East is free!");
+					east = true;
+				}
+			}
+			
+			//Down 1 (South)
+			for(i = 0; i < possibleGuesses.size(); i++)
+			{
+				if (xCheck == possibleGuesses.get(i).column && (yCheck - 1) == possibleGuesses.get(i).row )
+				{
+					System.out.println("South is free!");
+					south = true;
+				}
+			}
+			
+			//Left 1 (West)
+			for(i = 0; i < possibleGuesses.size(); i++)
+			{
+				if ((xCheck - 1) == possibleGuesses.get(i).column && yCheck == possibleGuesses.get(i).row )
+				{
+					System.out.println("West is free!");
+					west = true;
+				}
+			}
+			
+			
+			//Check if north can be checked
+			/*
+			for (Guess guessCheck : possibleGuesses)
+			{
+				i++;
+				if ((xCheck + 1) == guessCheck.column && yCheck == guessCheck.row )
+				{
+					System.out.println("North is free!");
+					
+					possibleGuesses.remove(i);
+				}
+			}*/
 		}
-
+		
+		
+		
         Guess guess = new Guess();
+		
+		
+		
+		
+		
         //ranGuess.row = location.get(xCheck).row;
         //ranGuess.column = location.get(yCheck).column;
         
+		if(north || east || south || west == true)
+		{
+			deciding = true;
+		}
+		else
+		{
+			raycastQueue.pollLast();
+		}
+		
+		
+		if (deciding == true)
+		{
+			while(deciding == true)
+			{
+				if(north == true)
+				{
+					yCheck += 1;
+					deciding = false;
+				}
+				else if(east == true)
+				{
+					xCheck += 1;
+					deciding = false;
+				}
+				else if(south == true)
+				{
+					yCheck -= 1;
+					deciding = false;
+				}
+				else if(west == true)
+				{
+					xCheck -= 1;
+					deciding = false;
+				}
+			}
+		}
+		
+		
 		
 		
 		guess.row = yCheck;
@@ -175,6 +327,9 @@ public class GreedyGuessPlayer implements Player{
 		System.out.println("***end of update");
 		System.out.println("xCheck = " + xCheck);
 		System.out.println("yCheck = " + yCheck);
+		
+		
+		
 		
 		
 		//if (answer.)
