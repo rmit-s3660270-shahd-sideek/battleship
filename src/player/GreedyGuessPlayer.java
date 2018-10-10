@@ -102,7 +102,7 @@ public class GreedyGuessPlayer implements Player{
 					System.out.println("raycastQueue size: " + raycastQueue.size());
 					System.out.println("possibleGuesses size: " + possibleGuesses.size());
 					
-					Iterator iter = possibleGuesses.iterator();
+					//Iterator iter = possibleGuesses.iterator();
 					
 					/*
 					while (iter.hasNext())
@@ -122,6 +122,42 @@ public class GreedyGuessPlayer implements Player{
 							possibleGuesses.remove(i);
 						}
 					}
+					
+					
+					if( north && east && south && west == false)
+					{
+						System.out.println("All directions false (They shouldn't!)");
+					}
+					
+					System.out.println("***Alpha");
+					
+					//CHeck all directions
+					if(north == true)
+					{
+						
+						System.out.println("North post-hit true");
+					}
+					
+					if(east == true)
+					{
+						
+						System.out.println("East post-hit true");
+					}
+					
+					if(south == true)
+					{
+						
+						System.out.println("South post-hit true");
+					}
+					
+					if(west == true)
+					{
+						
+						System.out.println("West post-hit true");
+					}
+					
+					System.out.println("***Bravo");
+					
 					
 					if(north == true)
 					{
@@ -143,6 +179,8 @@ public class GreedyGuessPlayer implements Player{
 						xCheck += 1;
 						System.out.println("West xcheck reset");
 					}
+					
+					
 					
 					System.out.println("Nintendo");
 					
@@ -208,11 +246,16 @@ public class GreedyGuessPlayer implements Player{
 			//Up 1 (North)
 			for(i = 0; i < possibleGuesses.size(); i++)
 			{
-				if (xCheck == possibleGuesses.get(i).column && (yCheck + 1) == possibleGuesses.get(i).row )
-				{
-					System.out.println("North is free!");
-					north = true;
-				}
+				//if(possibleGuesses.get(i)
+				//{
+					if (xCheck == possibleGuesses.get(i).column && (yCheck + 1) == possibleGuesses.get(i).row )
+					{
+						System.out.println("North is free!");
+						System.out.println("Check: " + possibleGuesses.get(i).column + " " + possibleGuesses.get(i).row );
+						north = true;
+						break;
+					}
+				//}
 			}
 			
 			//Right 1 (East)
@@ -222,6 +265,7 @@ public class GreedyGuessPlayer implements Player{
 				{
 					System.out.println("East is free!");
 					east = true;
+					break;
 				}
 			}
 			
@@ -232,6 +276,7 @@ public class GreedyGuessPlayer implements Player{
 				{
 					System.out.println("South is free!");
 					south = true;
+					break;
 				}
 			}
 			
@@ -242,6 +287,7 @@ public class GreedyGuessPlayer implements Player{
 				{
 					System.out.println("West is free!");
 					west = true;
+					break;
 				}
 			}
 			
@@ -284,7 +330,7 @@ public class GreedyGuessPlayer implements Player{
 		
 		if (deciding == true)
 		{
-			while(deciding == true)
+			while(true)
 			{
 				if(north == true)
 				{
@@ -292,6 +338,7 @@ public class GreedyGuessPlayer implements Player{
 					
 					//north = false;
 					deciding = false;
+					break;
 				}
 				else if(east == true)
 				{
@@ -299,6 +346,7 @@ public class GreedyGuessPlayer implements Player{
 					
 					//east = false;
 					deciding = false;
+					break;
 				}
 				else if(south == true)
 				{
@@ -306,12 +354,14 @@ public class GreedyGuessPlayer implements Player{
 					
 					//south = false;
 					deciding = false;
+					break;
 				}
 				else if(west == true)
 				{
 					xCheck -= 1;
 					//west = false;
 					deciding = false;
+					break;
 					
 				}
 			}
@@ -322,7 +372,6 @@ public class GreedyGuessPlayer implements Player{
 		
 		guess.row = yCheck;
 		guess.column = xCheck;
-		
 		
 		
 
@@ -341,6 +390,14 @@ public class GreedyGuessPlayer implements Player{
     @Override
     public void update(Guess guess, Answer answer) {
         //the coordinates will get updated here, after each shot.
+		
+		if(yCheck >= 10)
+		{
+			System.out.println("***Emergency ycheck reset***");
+			yCheck = 0;
+		}
+		
+		
 		
 		/*
 		if(raycastQueue.size() > 0)
