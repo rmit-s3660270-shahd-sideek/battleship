@@ -1,0 +1,195 @@
+@Override
+    public void update(Guess guess, Answer answer)
+	{
+		//Let's start by adding the coordinate to the deque if it was a successful hit.
+		if(answer.isHit == true)
+		{
+			raycastQueue.add(guess);
+		}
+		
+		boolean deciding = false;
+		
+		//Remove the guess from possible guesses, because it has already been realised!
+		possibleGuesses.remove(guess);
+		
+		//Raycast checks! Fun!
+		int i;
+		
+		if(raycastQueue.size() != 0)
+		{
+			for( i = 0; i < possibleGuesses.size(); i++)
+			{
+				//If a matching coordinate is found in possible guesses 
+				
+				//One above
+				//boolean found = false;
+				
+				if (xCheck == possibleGuesses.get(i).column && (yCheck + 1) == possibleGuesses.get(i).row)
+				{
+					System.out.println("--- Iteration: " + possibleGuesses.get(i).column + " , " + possibleGuesses.get(i).row );
+					if(possibleGuesses.get(i) != null)
+					{
+						System.out.println("North is free!");
+						System.out.println("Check: " + possibleGuesses.get(i).column + " , " + possibleGuesses.get(i).row );
+
+						north = true;
+					}
+					else
+					{
+						System.out.println("North has already been executed.");
+					
+						//Set the Ycheck back to the "default".
+						yCheck = raycastQueue.peekLast().row;
+					}
+				}
+				
+				//Check right/East (x + 1)
+				if ((xCheck + 1) == possibleGuesses.get(i).column && yCheck == possibleGuesses.get(i).row)
+				{
+					System.out.println("--- Iteration: " + possibleGuesses.get(i).column + " , " + possibleGuesses.get(i).row );
+					if(possibleGuesses.get(i) != null)
+					{
+						System.out.println("East is free!");
+						System.out.println("Check: " + possibleGuesses.get(i).column + " , " + possibleGuesses.get(i).row );
+
+						east = true;
+					}
+					else
+					{
+						System.out.println("East has already been executed.");
+					
+						//Set the Ycheck back to the "default".
+						xCheck = raycastQueue.peekLast().row;
+					}
+				}
+				
+				
+				
+				
+				//Check down/south (y - 1)
+				if (xCheck == possibleGuesses.get(i).column && (yCheck - 1) == possibleGuesses.get(i).row)
+				{
+					System.out.println("--- Iteration: " + possibleGuesses.get(i).column + " , " + possibleGuesses.get(i).row );
+					if(possibleGuesses.get(i) != null)
+					{
+						System.out.println("South is free!");
+						System.out.println("Check: " + possibleGuesses.get(i).column + " , " + possibleGuesses.get(i).row );
+
+						south = true;
+					}
+					else
+					{
+						System.out.println("East has already been executed.");
+					
+						//Set the Ycheck back to the "default".
+						yCheck = raycastQueue.peekLast().row;
+					}
+				}
+				
+				
+				//Check left/west (x - 1)
+				if ((xCheck - 1) == possibleGuesses.get(i).column && yCheck == possibleGuesses.get(i).row)
+				{
+					System.out.println("--- Iteration: " + possibleGuesses.get(i).column + " , " + possibleGuesses.get(i).row );
+					if(possibleGuesses.get(i) != null)
+					{
+						System.out.println("West is free!");
+						System.out.println("Check: " + possibleGuesses.get(i).column + " , " + possibleGuesses.get(i).row );
+
+						west = true;
+					}
+					else
+					{
+						System.out.println("West has already been executed.");
+					
+						//Set the Ycheck back to the "default".
+						xCheck = raycastQueue.peekLast().row;
+					}
+				}
+			}
+		}
+		
+		
+		//Guess guess = new Guess();
+		
+		if(north || east || south || west == true)
+		{
+			System.out.println("Still raycasting!");
+			//Infinite loop here!
+			deciding = true;
+			
+			//By using if else with the directions in clockwise order, it will only check once in a time and in the correct order.
+			while(deciding == true)
+			{
+				if(north == true)
+				{
+					yCheck += 1;
+					
+					//north = false;
+					deciding = false;
+					
+					break;
+				}
+				else if(east == true)
+				{
+					xCheck += 1;
+					
+					//east = false;
+					deciding = false;
+					break;
+				}
+				else if(south == true)
+				{
+					yCheck -= 1;
+					
+					//south = false;
+					deciding = false;
+					break;
+				}
+				else if(west == true)
+				{
+					xCheck -= 1;
+					//west = false;
+					deciding = false;
+					break;
+				}
+			}
+		}
+		else //If all are false, that means the raycast is either not needed or complete.
+		{
+			//raycastQueue.pollLast();
+			System.out.println("Updating as usual");
+			
+			xCheck += 2;
+			
+			if (xCheck >= 10)
+			{
+				yCheck++;
+				xCheck = 0;
+				System.out.println("^^^Column up^^^");
+			}
+			
+			if ( yCheck % 2 == 1 && xCheck == 0)
+			{
+				xCheck = 1;
+				System.out.println("odd row. Offsetting by 1.");
+			}
+			
+			
+			
+			
+			
+			
+		}
+		
+		//Set the directions.
+		guess.row = yCheck;
+		guess.column = xCheck;
+		
+		
+		
+			// dummy return
+		
+		System.out.println("End of update");
+		
+    } // end of update()
