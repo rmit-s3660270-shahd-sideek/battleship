@@ -67,7 +67,7 @@ public class RandomGuessPlayer implements Player{
             while (j<=world.shipLocations.get(i).coordinates.size()-1) {
                 if (world.shipLocations.get(i).coordinates.get(j).row == guess.row && world.shipLocations.get(i).coordinates.get(j).column == guess.column) {
                     answer.isHit = true;
-                    System.out.println("Hit!");
+                    System.out.println("Random Hit!");
 
                     hits++;
                     System.out.println("shots taken: " + hits);
@@ -84,7 +84,7 @@ public class RandomGuessPlayer implements Player{
         }
 
         if (answer.isHit == false) {
-            System.out.println("Missed!");
+            System.out.println("Random Missed!");
         }
         return answer;
     } // end of getAnswer()
